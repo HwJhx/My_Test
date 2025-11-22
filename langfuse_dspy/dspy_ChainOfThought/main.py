@@ -1,12 +1,10 @@
 import os
 import asyncio
 # Get keys for your project from the project settings page: https://cloud.langfuse.com
-os.environ["LANGFUSE_PUBLIC_KEY"] = "pk-lf-96a76ed5-18dc-45f9-984e-1954963b0e6d" 
-os.environ["LANGFUSE_SECRET_KEY"] = "sk-lf-200016fe-78f8-4ee8-b652-95323fa2256a" 
-os.environ["LANGFUSE_BASE_URL"] = "https://us.cloud.langfuse.com" # 🇺🇸 US region
- 
-# Your OpenAI key
-os.environ["OPENAI_API_KEY"] = "sk-eqzeuqzxixvegmqxvzotaeulteeciduvmrttalyizwylotfv" 
+from dotenv import load_dotenv
+load_dotenv()
+
+# Keys are now loaded from .env file
 
 
 
