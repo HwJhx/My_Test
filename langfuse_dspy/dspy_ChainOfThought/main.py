@@ -1,8 +1,12 @@
 import os
 import asyncio
+from pathlib import Path
 # Get keys for your project from the project settings page: https://cloud.langfuse.com
 from dotenv import load_dotenv
-load_dotenv()
+
+# 获取当前文件所在目录，确保能找到 .env 文件
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # Keys are now loaded from .env file
 
@@ -40,12 +44,6 @@ dspy.configure(lm=lm, usage_tracker=DSPyInstrumentor().instrument())
 
 
 
-# math = dspy.ChainOfThought("question -> answer: float")
-# math(question="Two dice are tossed. What is the probability that the sum equals two?")
-
-
-# math = dspy.ChainOfThought("question -> answer: str")
-# math(question="请写一个300字左右的中文散文")
 
 from langfuse import observe, propagate_attributes
 def llm_infer(input):
@@ -85,18 +83,12 @@ async def my_llm_pipeline():
             total_tokens = usage.get('total_tokens')
             print(f"Last Usage in History: {last_interaction.get('usage')}")  # <--- 这里打印出来的
             print(f"Last Response Keys: {last_interaction.keys()}")
-            #     # Mock token usage data
-            # usage = {
-            #     "prompt_tokens": 50,  # Replace with actual token count
-            #     "completion_tokens": 49,  # Replace with actual token count
-            #     "total_tokens": 99  # Replace with actual token count
-            # }
 
             # Mock token usage data
             usage = {
-                "input": 50,  # Replace with actual token count
-                "output": 49,  # Replace with actual token count
-                "total": 99  # Replace with actual token count
+                "input": prompt_tokens,  # 输入token数(包含prompt和原始输入)
+                "output": completion_tokens,  # 输出token数
+                "total": total_tokens  # 总token数
             }
             
             generation = langfuse.update_current_generation(
